@@ -29,9 +29,9 @@
 //    private DictionaryParser dictionaryParser;
 //
 //    @Test
-//    public void afterPropertiesSet_shouldMakeACallToExpectedUrl() {
+//    public void getDictionary_shouldMakeACallToExpectedUrl() {
 //        when(restTemplate.execute(anyString(), any(HttpMethod.class), eq(null), any(ResponseExtractor.class))).thenReturn(List.of());
-//        dictionaryParser.afterPropertiesSet();
+//        dictionaryParser.getDictionary(1, "a");
 //        verify(restTemplate).execute(eq(URL), eq(HttpMethod.GET), eq(null), any(ResponseExtractor.class));
 //    }
 //

@@ -1,5 +1,6 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
+import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 public class WordSquareBuilder {
 
     @Autowired private PrefixBuilder prefixBuilder;
+    @Autowired private WordUtil wordUtil;
 
     public boolean build(LinkedList<String> grid, List<String> words, int size, String letters) {
         final String prefix = prefixBuilder.buildPrefix(grid);
@@ -46,16 +48,9 @@ public class WordSquareBuilder {
     }
 
     private List<String> filterWords(final List<String> words, final String letters) {
-        return words.stream().filter(word -> {
-            String availableLetters = letters;
-            for (char c : word.toCharArray()) {
-                if (letters.indexOf(c) == -1){
-                    return false;
-                }
-                availableLetters = availableLetters.replaceFirst(Character.toString(c), "");
-            }
-            return true;
-        }).collect(Collectors.toList());
+        return words.stream()
+                .filter(word -> wordUtil.isAnagram(word, letters))
+                .collect(Collectors.toList());
     }
 
 }

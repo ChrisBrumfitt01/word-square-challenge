@@ -1,6 +1,7 @@
 package com.naimuri.wordsquare.WordSquareChallenge.fileio;
 
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
+import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,11 @@ import java.util.List;
 public class DictionaryParser {
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private WordUtil wordUtil;
+
 
     public Dictionary getDictionary(int size, String text) {
         String url = "http://norvig.com/ngrams/enable1.txt";
@@ -38,12 +43,6 @@ public class DictionaryParser {
         if(word.length() != size) {
             return false;
         }
-        for(char c : word.toCharArray()){
-            if (text.indexOf(c) == -1){
-                return false;
-            }
-            text = text.replaceFirst(Character.toString(c), "");
-        }
-        return true;
+        return wordUtil.isAnagram(word, text);
     }
 }
