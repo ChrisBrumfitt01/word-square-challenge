@@ -1,5 +1,6 @@
 package com.naimuri.wordsquare.WordSquareChallenge.fileio;
 
+import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -9,33 +10,40 @@ import org.springframework.web.client.RestTemplate;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
-public class DictionaryParser implements InitializingBean {
+public class DictionaryParser {
 
     @Autowired
     RestTemplate restTemplate;
 
-    private List<String> dictionary;
-
-    public boolean isValidWord(String word) {
-        return Collections.binarySearch(dictionary, word) >= 0;
-    }
-
-    @Override
-    public void afterPropertiesSet() {
+    public Dictionary getDictionary(int size, String text) {
         String url = "http://norvig.com/ngrams/enable1.txt";
-        dictionary = restTemplate.execute(url, HttpMethod.GET, null, response -> {
+        return restTemplate.execute(url, HttpMethod.GET, null, response -> {
             BufferedReader br = new BufferedReader(new InputStreamReader(response.getBody()));
-            List<String> lines = new ArrayList<>();
+            List<String> words = new ArrayList<>();
             String line;
             while((line = br.readLine()) != null){
-                lines.add(line.toLowerCase());
+                if (isMatch(line, size, text)){
+                    words.add(line.toLowerCase());
+                }
             }
             br.close();
-            return lines;
+            return new Dictionary(words);
         });
+    }
+
+    private boolean isMatch(String word, int size, String text) {
+        if(word.length() != size) {
+            return false;
+        }
+        for(char c : word.toCharArray()){
+            if (text.indexOf(c) == -1){
+                return false;
+            }
+            text = text.replaceFirst(Character.toString(c), "");
+        }
+        return true;
     }
 }

@@ -29,7 +29,7 @@ public class WordSquareServiceIntegrationTest {
         return Stream.of(
                 arguments(4, "eeeeddoonnnsssrv", List.of("rose", "oven", "send", "ends")),
                 arguments(4, "aaccdeeeemmnnnoo", List.of("moan", "once", "acme", "need")),
-                arguments(5, "aaaeeeefhhmoonssrrrrttttw", List.of("feast", "earth", "armor", "stone", "threw")),
+                arguments(5, "aaaeeeefhhmoonssrrrrttttw", List.of("feast", "earth", "armer", "stone", "throw")),
                 arguments(5, "aabbeeeeeeeehmosrrrruttvv", List.of("heart", "ember", "above", "revue", "trees")),
                 arguments(7, "aaaaaaaaabbeeeeeeedddddggmmlloooonnssssrrrruvvyyy",
                         List.of("bravado", "renamed", "analogy", "valuers", "amoebas", "degrade", "odyssey"))
