@@ -20,14 +20,14 @@ public class WordSquareBuilder {
         this.wordUtil = wordUtil;
     }
 
-    public boolean build(LinkedList<String> grid, List<String> words, int size, String letters) {
+    public boolean build(LinkedList<String> grid, List<String> dictionaryWords, int size, String letters) {
         final String prefix = prefixBuilder.buildPrefix(grid);
-        List<String> filteredWords = words.stream()
+        List<String> filteredWords = dictionaryWords.stream()
                 .filter(w -> w.startsWith(prefix))
                 .collect(Collectors.toList());
 
         for(String word : filteredWords) {
-            boolean success = handleWord(grid, words, word, size, letters);
+            boolean success = handleWord(grid, dictionaryWords, word, size, letters);
             if(success){
                 return true;
             }
