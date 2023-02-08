@@ -43,10 +43,7 @@ public class WordSquareBuilder {
             return true;
         }
 
-        String availableLetters = letters;
-        for(Character c : word.toCharArray()){
-            availableLetters = availableLetters.replaceFirst(String.valueOf(c), "");
-        }
+        String availableLetters = wordUtil.stripLetters(word, letters);
 
         List<String> wordsWithNewlyReducedLetters = filterWords(words, availableLetters);
         build(grid, wordsWithNewlyReducedLetters, size, availableLetters);

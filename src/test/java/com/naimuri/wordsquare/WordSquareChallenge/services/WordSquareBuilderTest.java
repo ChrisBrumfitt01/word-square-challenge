@@ -1,5 +1,6 @@
 //package com.naimuri.wordsquare.WordSquareChallenge.services;
 //
+//import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
 //import org.mockito.Mock;
@@ -16,7 +17,7 @@
 //public class WordSquareBuilderTest {
 //
 //    @Mock private PrefixBuilder prefixBuilder;
-//    @Mock private WordFinder wordFinder;
+//    @Mock private WordUtil wordUtil;
 //
 //    @InjectMocks
 //    private WordSquareBuilder builder;

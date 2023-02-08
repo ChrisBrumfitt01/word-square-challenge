@@ -1,17 +1,9 @@
 package com.naimuri.wordsquare.WordSquareChallenge.util;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,13 +14,18 @@ public class WordUtilTest {
     private WordUtil wordUtil = new WordUtil();
 
     @ParameterizedTest
-    @MethodSource("testParams")
-    public void shouldReturnTrue_whenAllCharactersOfAWord_areIncludedInTheLetters(String word, String letters,
-                                                                                  boolean expected) {
+    @MethodSource("isAnagramParams")
+    public void isAnagramTest(String word, String letters, boolean expected) {
         assertThat(wordUtil.isAnagram(word, letters)).isEqualTo(expected);
     }
 
-    private static Stream<Arguments> testParams() {
+    @ParameterizedTest
+    @MethodSource("stripLettersParams")
+    public void stripLettersTest(String word, String letters, String expected) {
+        assertThat(wordUtil.stripLetters(word, letters)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> isAnagramParams() {
         return Stream.of(
                 arguments("a", "a", true),
                 arguments("a", "abc", true),
@@ -37,6 +34,16 @@ public class WordUtilTest {
                 arguments("and", "nd", false),
                 arguments("aa", "a", false),
                 arguments("balloons", "balons", false)
+        );
+    }
+
+    private static Stream<Arguments> stripLettersParams() {
+        return Stream.of(
+                arguments("a", "a", ""),
+                arguments("b", "b", ""),
+                arguments("word", "word", ""),
+                arguments("word", "wordand", "and"),
+                arguments("word", "dddword", "ddd")
         );
     }
 

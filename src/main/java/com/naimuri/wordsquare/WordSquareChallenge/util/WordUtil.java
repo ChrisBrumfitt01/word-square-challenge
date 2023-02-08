@@ -15,4 +15,11 @@ public class WordUtil {
         return true;
     }
 
+    public String stripLetters(String word, String letters) {
+        for(Character c : word.toCharArray()){
+            letters = letters.replaceFirst(String.valueOf(c), "");
+        }
+        return letters;
+    }
+
 }
