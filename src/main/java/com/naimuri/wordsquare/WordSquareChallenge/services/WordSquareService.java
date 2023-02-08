@@ -11,8 +11,14 @@ import java.util.stream.Collectors;
 @Service
 public class WordSquareService {
 
-    @Autowired private DictionaryParser dictionaryParser;
-    @Autowired private WordSquareBuilder wordSquareBuilder;
+    private DictionaryParser dictionaryParser;
+    private WordSquareBuilder wordSquareBuilder;
+
+    @Autowired
+    public WordSquareService(final DictionaryParser dictionaryParser, final WordSquareBuilder wordSquareBuilder) {
+        this.dictionaryParser = dictionaryParser;
+        this.wordSquareBuilder = wordSquareBuilder;
+    }
 
     public List<String> solveWordSquare(int size, String text){
         LinkedList<String> grid = new LinkedList<>();

@@ -16,12 +16,14 @@ import java.util.List;
 @Component
 public class DictionaryParser {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final WordUtil wordUtil;
 
     @Autowired
-    private WordUtil wordUtil;
-
+    public DictionaryParser(final RestTemplate restTemplate, final WordUtil wordUtil) {
+        this.restTemplate = restTemplate;
+        this.wordUtil = wordUtil;
+    }
 
     public Dictionary getDictionary(int size, String text) {
         String url = "http://norvig.com/ngrams/enable1.txt";

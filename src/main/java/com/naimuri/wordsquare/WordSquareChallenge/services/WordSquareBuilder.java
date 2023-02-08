@@ -11,8 +11,14 @@ import java.util.stream.Collectors;
 @Component
 public class WordSquareBuilder {
 
-    @Autowired private PrefixBuilder prefixBuilder;
-    @Autowired private WordUtil wordUtil;
+    private final PrefixBuilder prefixBuilder;
+    private final WordUtil wordUtil;
+
+    @Autowired
+    public WordSquareBuilder(final PrefixBuilder prefixBuilder, final WordUtil wordUtil) {
+        this.prefixBuilder = prefixBuilder;
+        this.wordUtil = wordUtil;
+    }
 
     public boolean build(LinkedList<String> grid, List<String> words, int size, String letters) {
         final String prefix = prefixBuilder.buildPrefix(grid);
