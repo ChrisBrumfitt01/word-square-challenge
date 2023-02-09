@@ -2,9 +2,10 @@ package com.naimuri.wordsquare.WordSquareChallenge.services;
 
 import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class WordSquareBuilderTest {
 
     @Mock private PrefixBuilder prefixBuilder;
@@ -89,7 +90,8 @@ public class WordSquareBuilderTest {
         LinkedList<String> grid = new LinkedList<>(List.of("yes"));
         when(prefixBuilder.buildPrefix(any())).thenReturn("e").thenReturn("se");
         when(wordUtil.stripLetters("eye", letters)).thenReturn(lettersWithoutEye);
-        when(wordUtil.isAnagram("set",  lettersWithoutEye)).thenReturn(true);
+        when(wordUtil.isAnagram(anyString(),  eq(lettersWithoutEye))).thenReturn(true);
+
 
         boolean result = builder.build(grid, List.of("eye", "set"), 3, letters);
         assertThat(result).isTrue();
@@ -104,7 +106,7 @@ public class WordSquareBuilderTest {
         LinkedList<String> grid = new LinkedList<>(List.of("yes"));
         when(prefixBuilder.buildPrefix(any())).thenReturn("e").thenReturn("se");
         when(wordUtil.stripLetters("eye", letters)).thenReturn(lettersWithoutEye);
-        when(wordUtil.isAnagram("set",  lettersWithoutEye)).thenReturn(true);
+        when(wordUtil.isAnagram(anyString(),  eq(lettersWithoutEye))).thenReturn(true);
 
         boolean result = builder.build(grid, List.of("eye", "jim", "nice"), 3, letters);
         assertThat(result).isFalse();

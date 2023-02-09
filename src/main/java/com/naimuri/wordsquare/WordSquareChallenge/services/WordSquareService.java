@@ -23,7 +23,7 @@ public class WordSquareService {
     public WordSquare solveWordSquare(int size, String text) throws NoValidSolutionException {
         LinkedList<String> wordSquare = new LinkedList<>();
         List<String> words = dictionaryHttpReader.getDictionary(size, text).getWords();
-        if(wordSquareBuilder.build(wordSquare, words, size, text)){
+        if(words.size() >= size && wordSquareBuilder.build(wordSquare, words, size, text)){
             return new WordSquare(wordSquare);
         }
         throw new NoValidSolutionException("No solution found");

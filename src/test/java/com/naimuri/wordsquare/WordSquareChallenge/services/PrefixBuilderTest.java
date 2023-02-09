@@ -1,17 +1,17 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class PrefixBuilderTest {
 
-    @Autowired PrefixBuilder prefixBuilder;
+    PrefixBuilder prefixBuilder = new PrefixBuilder();
 
     @Test
     public void shouldReturnEmptyString_whenGridIsEmpty() {
