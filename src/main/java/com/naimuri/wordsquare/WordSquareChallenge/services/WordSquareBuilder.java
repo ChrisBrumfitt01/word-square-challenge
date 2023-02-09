@@ -21,6 +21,10 @@ public class WordSquareBuilder {
     }
 
     public boolean build(LinkedList<String> grid, List<String> dictionaryWords, int size, String letters) {
+        if(dictionaryWords.size() < size) {
+            return false;
+        }
+
         final String prefix = prefixBuilder.buildPrefix(grid);
         List<String> filteredWords = dictionaryWords.stream()
                 .filter(w -> w.startsWith(prefix))

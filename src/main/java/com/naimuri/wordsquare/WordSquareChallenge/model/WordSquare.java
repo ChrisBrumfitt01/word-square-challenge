@@ -10,6 +10,10 @@ public class WordSquare {
         this.words = words;
     }
 
+    public List<String> getWords(){
+        return this.words;
+    }
+
     @Override
     public String toString() {
         return String.join("\n", words);
