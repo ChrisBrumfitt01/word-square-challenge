@@ -20,7 +20,7 @@ public class WordSquareService {
         this.wordSquareBuilder = wordSquareBuilder;
     }
 
-    public WordSquare solveWordSquare(int size, String text){
+    public WordSquare solveWordSquare(int size, String text) throws NoValidSolutionException {
         LinkedList<String> wordSquare = new LinkedList<>();
         List<String> words = dictionaryHttpReader.getDictionary(size, text).getWords();
         if(wordSquareBuilder.build(wordSquare, words, size, text)){

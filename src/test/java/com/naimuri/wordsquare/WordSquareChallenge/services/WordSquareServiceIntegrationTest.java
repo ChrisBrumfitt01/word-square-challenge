@@ -25,7 +25,7 @@ public class WordSquareServiceIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("successfulTestParams")
-    public void solveWordSquare_shouldReturnExpectedWordSquare_whenSuccessful(int size, String text, List<String> expected) {
+    public void solveWordSquare_shouldReturnExpectedWordSquare_whenSuccessful(int size, String text, List<String> expected) throws NoValidSolutionException {
         WordSquare actual = wordSquareService.solveWordSquare(size, text);
         assertThat(actual.getWords()).isEqualTo(expected);
     }

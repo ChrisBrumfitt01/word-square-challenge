@@ -4,7 +4,6 @@ import com.naimuri.wordsquare.WordSquareChallenge.exceptions.NoValidSolutionExce
 import com.naimuri.wordsquare.WordSquareChallenge.http.DictionaryHttpReader;
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
 import com.naimuri.wordsquare.WordSquareChallenge.model.WordSquare;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -41,23 +40,19 @@ public class WordSquareServiceTest {
     private final List<String> words = List.of("words", "more");
     private final Dictionary dictionary = new Dictionary(words);
 
-    @BeforeEach
-    public void beforeEach(){
+    @Test
+    public void shouldCallWordSquareBuilder_withExpectedParams() throws NoValidSolutionException {
         when(dictionaryHttpReader.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
         when(wordSquareBuilder.build(any(LinkedList.class), anyList(), anyInt(), anyString())).thenReturn(true);
 
         service.solveWordSquare(size, letters);
-    }
-
-    @Test
-    public void shouldCallWordSquareBuilder_withExpectedParams() {
         verify(wordSquareBuilder).build(listCaptor.capture(), eq(words), eq(size), eq(letters));
         List<String> actualGrid = listCaptor.getValue();
         assertThat(actualGrid).isEmpty();
     }
 
     @Test
-    public void shouldReturnWordSquare_whenWordSquareBuilderIsSuccessful() {
+    public void shouldReturnWordSquare_whenWordSquareBuilderIsSuccessful() throws NoValidSolutionException {
         String letters = "abcde";
         int size = 2;
         List<String> words = List.of("words", "more");
