@@ -3,6 +3,7 @@ package com.naimuri.wordsquare.WordSquareChallenge.services;
 import com.naimuri.wordsquare.WordSquareChallenge.exceptions.NoValidSolutionException;
 import com.naimuri.wordsquare.WordSquareChallenge.http.DictionaryHttpReader;
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
+import com.naimuri.wordsquare.WordSquareChallenge.model.WordSquare;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +57,7 @@ public class WordSquareServiceTest {
     }
 
     @Test
-    public void shouldReturnGrid_whenWordSquareBuilderIsSuccessful() {
+    public void shouldReturnWordSquare_whenWordSquareBuilderIsSuccessful() {
         String letters = "abcde";
         int size = 2;
         List<String> words = List.of("words", "more");
@@ -65,7 +66,7 @@ public class WordSquareServiceTest {
         when(dictionaryHttpReader.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
         when(wordSquareBuilder.build(any(LinkedList.class), anyList(), anyInt(), anyString())).thenReturn(true);
 
-        List<String> actual = service.solveWordSquare(size, letters);
+        WordSquare actual = service.solveWordSquare(size, letters);
         assertThat(actual).isNotNull();
     }
 
