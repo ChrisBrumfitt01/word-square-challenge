@@ -13,16 +13,11 @@ import java.util.List;
 @SpringBootApplication
 public class WordSquareChallengeApplication implements CommandLineRunner {
 
-	//TODO: Add validation
-	//TODO: Add UI
-
 	private final WordSquareService wordSquareService;
-	private final UI ui;
 
 	@Autowired
-	public WordSquareChallengeApplication(final WordSquareService wordSquareService, final UI ui) {
+	public WordSquareChallengeApplication(final WordSquareService wordSquareService) {
 		this.wordSquareService = wordSquareService;
-		this.ui = ui;
 	}
 
 	public static void main(String[] args) {
@@ -33,6 +28,6 @@ public class WordSquareChallengeApplication implements CommandLineRunner {
 
 	@Override
 	public void run(final String... args) throws Exception {
-		ui.start();
+		wordSquareService.solveWordSquare(Integer.parseInt(args[0]), args[1]);
 	}
 }
