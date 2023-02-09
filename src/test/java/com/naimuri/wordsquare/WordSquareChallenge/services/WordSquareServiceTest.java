@@ -1,7 +1,7 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
 import com.naimuri.wordsquare.WordSquareChallenge.exceptions.NoValidSolutionException;
-import com.naimuri.wordsquare.WordSquareChallenge.fileio.DictionaryParser;
+import com.naimuri.wordsquare.WordSquareChallenge.http.DictionaryHttpReader;
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class WordSquareServiceTest {
     @Mock
     private WordSquareBuilder wordSquareBuilder;
     @Mock
-    private DictionaryParser dictionaryParser;
+    private DictionaryHttpReader dictionaryHttpReader;
 
     @Captor
     ArgumentCaptor<LinkedList<String>> listCaptor;
@@ -42,7 +42,7 @@ public class WordSquareServiceTest {
 
     @BeforeEach
     public void beforeEach(){
-        when(dictionaryParser.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
+        when(dictionaryHttpReader.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
         when(wordSquareBuilder.build(any(LinkedList.class), anyList(), anyInt(), anyString())).thenReturn(true);
 
         service.solveWordSquare(size, letters);
@@ -62,7 +62,7 @@ public class WordSquareServiceTest {
         List<String> words = List.of("words", "more");
         Dictionary dictionary = new Dictionary(words);
 
-        when(dictionaryParser.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
+        when(dictionaryHttpReader.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
         when(wordSquareBuilder.build(any(LinkedList.class), anyList(), anyInt(), anyString())).thenReturn(true);
 
         List<String> actual = service.solveWordSquare(size, letters);
@@ -76,7 +76,7 @@ public class WordSquareServiceTest {
         List<String> words = List.of("words", "more");
         Dictionary dictionary = new Dictionary(words);
 
-        when(dictionaryParser.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
+        when(dictionaryHttpReader.getDictionary(anyInt(), anyString())).thenReturn(dictionary);
         when(wordSquareBuilder.build(any(LinkedList.class), anyList(), anyInt(), anyString())).thenReturn(false);
         assertThatThrownBy(() -> service.solveWordSquare(size, letters))
                 .isInstanceOf(NoValidSolutionException.class);

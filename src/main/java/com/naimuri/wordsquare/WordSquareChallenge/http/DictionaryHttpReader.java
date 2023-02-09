@@ -1,4 +1,4 @@
-package com.naimuri.wordsquare.WordSquareChallenge.fileio;
+package com.naimuri.wordsquare.WordSquareChallenge.http;
 
 import com.naimuri.wordsquare.WordSquareChallenge.config.DictionaryConfig;
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
@@ -11,14 +11,14 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Component
-public class DictionaryParser {
+public class DictionaryHttpReader {
 
     private final RestTemplate restTemplate;
     private final WordUtil wordUtil;
     private final DictionaryConfig config;
 
     @Autowired
-    public DictionaryParser(final RestTemplate restTemplate, final WordUtil wordUtil, final DictionaryConfig config) {
+    public DictionaryHttpReader(final RestTemplate restTemplate, final WordUtil wordUtil, final DictionaryConfig config) {
         this.restTemplate = restTemplate;
         this.wordUtil = wordUtil;
         this.config = config;

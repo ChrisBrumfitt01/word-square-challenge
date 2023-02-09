@@ -1,4 +1,4 @@
-package com.naimuri.wordsquare.WordSquareChallenge.fileio;
+package com.naimuri.wordsquare.WordSquareChallenge.http;
 
 import com.naimuri.wordsquare.WordSquareChallenge.config.DictionaryConfig;
 import com.naimuri.wordsquare.WordSquareChallenge.model.Dictionary;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DictionaryParserTest {
+public class DictionaryHttpReaderTest {
 
     private final String url = "www.stub.com";
 
@@ -32,7 +32,7 @@ public class DictionaryParserTest {
     private DictionaryConfig config;
 
     @InjectMocks
-    private DictionaryParser dictionaryParser;
+    private DictionaryHttpReader dictionaryHttpReader;
 
     @BeforeEach
     public void beforeEach(){
@@ -42,7 +42,7 @@ public class DictionaryParserTest {
     @Test
     public void getDictionary_shouldMakeCallToExpectedUrl() {
         when(restTemplate.getForObject(url, String.class)).thenReturn("test");
-        dictionaryParser.getDictionary(4, "test");
+        dictionaryHttpReader.getDictionary(4, "test");
         verify(restTemplate).getForObject(url, String.class);
     }
 
@@ -51,7 +51,7 @@ public class DictionaryParserTest {
         String response = "word\ntoo\nnot\nrose";
         when(restTemplate.getForObject(url, String.class)).thenReturn(response);
         when(wordUtil.isAnagram(any(), any())).thenReturn(true);
-        Dictionary actual = dictionaryParser.getDictionary(4, "test");
+        Dictionary actual = dictionaryHttpReader.getDictionary(4, "test");
         assertThat(actual.getWords()).containsExactly("word", "rose");
     }
 
@@ -62,7 +62,7 @@ public class DictionaryParserTest {
         when(restTemplate.getForObject(url, String.class)).thenReturn(response);
         when(wordUtil.isAnagram("word", letters)).thenReturn(true);
         when(wordUtil.isAnagram("rose", letters)).thenReturn(false);
-        Dictionary actual = dictionaryParser.getDictionary(4, letters);
+        Dictionary actual = dictionaryHttpReader.getDictionary(4, letters);
         assertThat(actual.getWords()).containsExactly("word");
     }
 
@@ -71,7 +71,7 @@ public class DictionaryParserTest {
         String response = "Word\nROSE";
         when(restTemplate.getForObject(url, String.class)).thenReturn(response);
         when(wordUtil.isAnagram(any(), any())).thenReturn(true);
-        Dictionary actual = dictionaryParser.getDictionary(4, "test");
+        Dictionary actual = dictionaryHttpReader.getDictionary(4, "test");
         assertThat(actual.getWords()).containsExactly("word", "rose");
     }
 

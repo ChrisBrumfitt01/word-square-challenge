@@ -1,28 +1,27 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
 import com.naimuri.wordsquare.WordSquareChallenge.exceptions.NoValidSolutionException;
-import com.naimuri.wordsquare.WordSquareChallenge.fileio.DictionaryParser;
+import com.naimuri.wordsquare.WordSquareChallenge.http.DictionaryHttpReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class WordSquareService {
 
-    private DictionaryParser dictionaryParser;
+    private DictionaryHttpReader dictionaryHttpReader;
     private WordSquareBuilder wordSquareBuilder;
 
     @Autowired
-    public WordSquareService(final DictionaryParser dictionaryParser, final WordSquareBuilder wordSquareBuilder) {
-        this.dictionaryParser = dictionaryParser;
+    public WordSquareService(final DictionaryHttpReader dictionaryHttpReader, final WordSquareBuilder wordSquareBuilder) {
+        this.dictionaryHttpReader = dictionaryHttpReader;
         this.wordSquareBuilder = wordSquareBuilder;
     }
 
     public List<String> solveWordSquare(int size, String text){
         LinkedList<String> grid = new LinkedList<>();
-        List<String> words = dictionaryParser.getDictionary(size, text).getWords();
+        List<String> words = dictionaryHttpReader.getDictionary(size, text).getWords();
         if(wordSquareBuilder.build(grid, words, size, text)){
             return grid;
         }
