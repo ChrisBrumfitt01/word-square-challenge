@@ -1,5 +1,6 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
+import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,17 +11,23 @@ import java.util.stream.Collectors;
 @Component
 public class WordSquareBuilder {
 
-    @Autowired private PrefixBuilder prefixBuilder;
-    @Autowired private WordFinder wordFinder;
+    private final PrefixBuilder prefixBuilder;
+    private final WordUtil wordUtil;
 
-    public boolean build(LinkedList<String> grid, List<String> words, int size, String letters) {
+    @Autowired
+    public WordSquareBuilder(final PrefixBuilder prefixBuilder, final WordUtil wordUtil) {
+        this.prefixBuilder = prefixBuilder;
+        this.wordUtil = wordUtil;
+    }
+
+    public boolean build(LinkedList<String> grid, List<String> dictionaryWords, int size, String letters) {
         final String prefix = prefixBuilder.buildPrefix(grid);
-        List<String> filteredWords = words.stream()
+        List<String> filteredWords = dictionaryWords.stream()
                 .filter(w -> w.startsWith(prefix))
                 .collect(Collectors.toList());
 
         for(String word : filteredWords) {
-            boolean success = handleWord(grid, word, size, letters);
+            boolean success = handleWord(grid, dictionaryWords, word, size, letters);
             if(success){
                 return true;
             }
@@ -30,20 +37,23 @@ public class WordSquareBuilder {
         return false;
     }
 
-    private boolean handleWord(LinkedList<String> grid, String word, int size, String letters){
+    private boolean handleWord(LinkedList<String> grid, List<String> words, String word, int size, String letters){
         grid.add(word);
         if(grid.size() == size) {
             return true;
         }
 
-        String availableLetters = letters;
-        for(Character c : word.toCharArray()){
-            availableLetters = availableLetters.replaceFirst(String.valueOf(c), "");
-        }
+        String availableLetters = wordUtil.stripLetters(word, letters);
 
-        List<String> wordsWithNewlyReducedLetters = wordFinder.getWords(size, availableLetters);
+        List<String> wordsWithNewlyReducedLetters = filterWords(words, availableLetters);
         build(grid, wordsWithNewlyReducedLetters, size, availableLetters);
         return grid.size() == size;
+    }
+
+    private List<String> filterWords(final List<String> words, final String letters) {
+        return words.stream()
+                .filter(word -> wordUtil.isAnagram(word, letters))
+                .collect(Collectors.toList());
     }
 
 }

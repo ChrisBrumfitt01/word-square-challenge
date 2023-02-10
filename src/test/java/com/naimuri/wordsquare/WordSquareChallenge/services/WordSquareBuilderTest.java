@@ -1,9 +1,11 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
+import com.naimuri.wordsquare.WordSquareChallenge.util.WordUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class WordSquareBuilderTest {
 
     @Mock private PrefixBuilder prefixBuilder;
-    @Mock private WordFinder wordFinder;
+    @Mock private WordUtil wordUtil;
 
     @InjectMocks
     private WordSquareBuilder builder;
@@ -80,33 +82,33 @@ public class WordSquareBuilderTest {
         assertThat(grid).containsExactly("yes");
     }
 
-    @Test
-    public void shouldFindWords_usingCorrectLetters_WithLettersFromTheWordThatWasJustAddedRemoved() {
-        LinkedList<String> grid = new LinkedList<>(List.of("yes"));
-        when(prefixBuilder.buildPrefix(any())).thenReturn("e");
-
-        builder.build(grid, List.of("eye", "the", "and",  "set"), 3, "eyeset");
-        verify(wordFinder).getWords(3, "set");
-    }
 
     @Test
     public void shouldReturnTrue_andPopulateGrid_whenGridNeeds2MoreWords_withSolutionAvailable() {
+        String letters = "eyesetjimnice";
+        String lettersWithoutEye = "setjimnice";
         LinkedList<String> grid = new LinkedList<>(List.of("yes"));
         when(prefixBuilder.buildPrefix(any())).thenReturn("e").thenReturn("se");
-        when(wordFinder.getWords(anyInt(), anyString())).thenReturn(List.of("set"));
+        when(wordUtil.stripLetters("eye", letters)).thenReturn(lettersWithoutEye);
+        when(wordUtil.isAnagram(anyString(),  eq(lettersWithoutEye))).thenReturn(true);
 
-        boolean result = builder.build(grid, List.of("eye"), 3, "eyeset");
+
+        boolean result = builder.build(grid, List.of("eye", "set"), 3, letters);
         assertThat(result).isTrue();
         assertThat(grid).containsExactly("yes", "eye", "set");
     }
 
+
     @Test
     public void shouldReturnFalse_andRemoveFromGrid_whenGridNeeds2MoreWords_noSolutionAvailableForLastWord() {
+        String letters = "eyejimnice";
+        String lettersWithoutEye = "jimnice";
         LinkedList<String> grid = new LinkedList<>(List.of("yes"));
         when(prefixBuilder.buildPrefix(any())).thenReturn("e").thenReturn("se");
-        when(wordFinder.getWords(anyInt(), anyString())).thenReturn(List.of("bad"));
+        when(wordUtil.stripLetters("eye", letters)).thenReturn(lettersWithoutEye);
+        when(wordUtil.isAnagram(anyString(),  eq(lettersWithoutEye))).thenReturn(true);
 
-        boolean result = builder.build(grid, List.of("eye"), 3, "eyeset");
+        boolean result = builder.build(grid, List.of("eye", "jim", "nice"), 3, letters);
         assertThat(result).isFalse();
         assertThat(grid).isEmpty();
     }

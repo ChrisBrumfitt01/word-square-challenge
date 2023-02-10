@@ -1,23 +1,30 @@
 package com.naimuri.wordsquare.WordSquareChallenge.services;
 
 import com.naimuri.wordsquare.WordSquareChallenge.exceptions.NoValidSolutionException;
+import com.naimuri.wordsquare.WordSquareChallenge.http.DictionaryHttpReader;
+import com.naimuri.wordsquare.WordSquareChallenge.model.WordSquare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class WordSquareService {
 
-    @Autowired private WordFinder wordFinder;
-    @Autowired private WordSquareBuilder wordSquareBuilder;
+    private DictionaryHttpReader dictionaryHttpReader;
+    private WordSquareBuilder wordSquareBuilder;
 
-    public List<String> solveWordSquare(int size, String text){
-        LinkedList<String> grid = new LinkedList<>();
-        List<String> words = wordFinder.getWords(size, text);
-        if(wordSquareBuilder.build(grid, words, size, text)){
-            return grid;
+    @Autowired
+    public WordSquareService(final DictionaryHttpReader dictionaryHttpReader, final WordSquareBuilder wordSquareBuilder) {
+        this.dictionaryHttpReader = dictionaryHttpReader;
+        this.wordSquareBuilder = wordSquareBuilder;
+    }
+
+    public WordSquare solveWordSquare(int size, String text) throws NoValidSolutionException {
+        LinkedList<String> wordSquare = new LinkedList<>();
+        List<String> words = dictionaryHttpReader.getDictionary(size, text).getWords();
+        if(words.size() >= size && wordSquareBuilder.build(wordSquare, words, size, text)){
+            return new WordSquare(wordSquare);
         }
         throw new NoValidSolutionException("No solution found");
     }
