@@ -12,21 +12,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommandLineUI implements CommandLineRunner {
 
+    private final UserInputReader userInputReader;
+    private final UserOutputWriter userOutputWriter;
     private final WordSquareService wordSquareService;
 
     @Autowired
-    public CommandLineUI(final WordSquareService wordSquareService) {
+    public CommandLineUI(
+            final UserInputReader userInputReader,
+            final WordSquareService wordSquareService,
+            final UserOutputWriter userOutputWriter
+    ) {
+        this.userInputReader = userInputReader;
         this.wordSquareService = wordSquareService;
+        this.userOutputWriter = userOutputWriter;
     }
 
     @Override
     public void run(final String... args) {
+        System.out.println("Welcome. Enter the size of your Word Square:");
+        int size = userInputReader.readInt();
+
+        System.out.println("Enter your letters:");
+        String letters = userInputReader.readString();
+
         try {
-            WordSquare wordSquare = wordSquareService.solveWordSquare(Integer.parseInt(args[0]), args[1]);
-            System.out.println(wordSquare);
+            WordSquare wordSquare = wordSquareService.solveWordSquare(size, letters);
+            userOutputWriter.writeLine(wordSquare.toString());
         } catch (NoValidSolutionException e) {
-            System.out.println(e.getMessage());
+            userOutputWriter.writeLine(e.getMessage());
         }
     }
-
 }
