@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Scanner;
+
 @Configuration
 public class BeanConfig {
 
@@ -13,6 +15,11 @@ public class BeanConfig {
         return new RestTemplateBuilder()
                 .defaultHeader("Accept", "plain/text")
                 .build();
+    }
+
+    @Bean
+    public Scanner scanner() {
+        return new Scanner(System.in);
     }
 
 }
