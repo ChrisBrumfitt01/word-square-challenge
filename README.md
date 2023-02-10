@@ -1,7 +1,5 @@
 To run, use the command:
 
-mvn spring-boot:run -Dspring-boot.run.arguments="arg1 arg2"
+mvn spring-boot:run
 
-For example:
-
-mvn spring-boot:run -Dspring-boot.run.arguments="4 eeeeddoonnnsssrv"
+You will then be prompted to enter a size for your word square (e.g. 4 for a 4x4 square) and the letters.
